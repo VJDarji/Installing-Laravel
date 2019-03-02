@@ -1,0 +1,7 @@
+The things that will matter are...
+1) MVC usage from laravel
+2) mobile responsible design
+3) database and App functionality
+4) Google maps or any API functionality
+5) the overall Application without bugs
+This should be the core goal
