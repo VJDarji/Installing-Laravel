@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Foodvilla Web app</title>
+
+    <!-- Bootstrap core CSS -->
+    
+    <?php echo Html::style('./resources/vendor/bootstrap/css/bootstrap.min.css'); ?>
+
+    
+    <?php echo Html::style('./resources/vendor/bootstrap/css/alertify.core.css'); ?>
+
+    
+    <?php echo Html::style('./resources/vendor/bootstrap/css/alertify.default.css'); ?>
+
+
+    <style type="text/css">
+      .row{line-height: 40px;}
+    </style>
+  </head>
+
+  <body>
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
+                
+                <a href="mealFinder/" style="margin-top: 10px;" class="btn btn-primary">Logout</a>&nbsp;&nbsp;
+                
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                
+                <ul class="nav navbar-nav">
+                    <li><a href="admin">Home</a></li>
+                    <li><a href="sell_food">Sell</a></li>
+                    <li><a href="select_seller">Order</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="change_password">Change Password</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+<form id="sellFood" enctype="multipart/form-data" onsubmit="upload_food_map(event)">
+    <!-- Page Content -->
+    <div class="container">
+     
+         
+      <div class="col-md-12 col-sm-12 col-xs-12 ">
+          <div class="col-md-6">
+            
+            <div class="panel panel-default">
+              <div class="panel-heading">Seller Description</div>
+              <div class="panel-body">
+
+            <div class="row">
+                <div class="col-md-3 col-sm-4 col-xs-4">Description</div>
+                <div class="col-md-7 col-sm-7 col-xs-7"><input type="text" name="description" class="form-control" value="<?php echo e($user->description); ?>"></div> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 col-sm-4 col-xs-4">Name</div>
+                <div class="col-md-7 col-sm-7 col-xs-7"><?php echo e($user->name); ?></div> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 col-sm-4 col-xs-4">Telephone No</div>
+                <div class="col-md-7 col-sm-7 col-xs-7"><?php echo e($user->phone); ?></div> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 col-sm-4 col-xs-4">Email</div>
+                <div class="col-md-7 col-sm-7 col-xs-7"><?php echo e($user->email); ?></div> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 col-sm-4 col-xs-4">Address</div>
+                <div class="col-md-7 col-sm-7 col-xs-7"><input type="text" name="address" class="form-control" value="<?php echo e($user->address); ?>"></div> 
+            </div>
+          </div>
+        </div>
+
+          </div>
+
+          <div class="col-md-6">
+            
+            <div class="panel panel-default">
+              <div class="panel-heading">Food Description Area:</div>
+              <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-4">Name</div>
+                <div class="col-md-7 col-sm-7 col-xs-7"><input type="text" name="name" class="form-control" required></div> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-4">Main Ingrediants:</div>
+                <div class="col-md-7 col-sm-7 col-xs-7"><input type="text" name="ingrediants" class="form-control" required></div> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-4">Serves:</div>
+                <div class="col-md-7 col-sm-7 col-xs-7"><input type="text" name="serves" class="form-control" required></div> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-4">Portions Left:</div>
+                <div class="col-md-3 col-sm-3 col-xs-3"><input type="number" name="portion_left" min="0" class="form-control" required></div> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-4">Chef Name:</div>
+                <div class="col-md-7 col-sm-7 col-xs-7"><input type="text" name="chef_name" class="form-control" required></div> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-4">Time Prepared:</div>
+                <div class="col-md-7 col-sm-7 col-xs-7"><input type="text" name="time_prepared" class="form-control" required></div> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-4">Good Till:</div>
+                <div class="col-md-7 col-sm-7 col-xs-7"><input type="text" name="good_till" class="form-control" required></div> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-4">Cost per Portion:</div>
+                <div class="col-md-3 col-sm-4 col-xs-5"><input type="number" name="cost_per_portion" min="0" class="form-control" required></div> 
+            </div>
+            
+            <!-- <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-4">Add Photo:</div>
+              <div class="col-md-7 col-sm-7 col-xs-7"><input type="file" name="uploadPhoto" value="Add Picture" class="form-control"></div>
+            </div> -->
+
+            <div class="row">
+              <div class="col-md-6"><input type="submit" name="upload" value="Upload to Food Map" class="btn btn-primary"></div>
+            </div>
+          </div>
+        </div>
+
+          </div>
+
+      </div>
+      
+      
+    </div>
+    <!-- /.container -->
+</form>
+
+    <!-- Bootstrap core JavaScript -->
+
+    <?php echo Html::script('./resources/vendor/jquery/jquery.min.js'); ?>
+
+   
+    <?php echo Html::script('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js'); ?> 
+
+
+    <?php echo Html::script('./resources/vendor/bootstrap/js/bootstrap.bundle.min.js'); ?> 
+   
+    <?php echo Html::script('./resources/vendor/bootstrap/js/bootstrap.min.js'); ?> 
+    
+    <?php echo Html::script('./resources/vendor/bootstrap/js/alertify.min.js'); ?>
+
+  
+    <script type="text/javascript" language="javascript">
+
+  //FUNCTION FOR TAB EDUCATIONAL QUALIFICATION
+  //28-05-16
+
+  function upload_food_map(event)
+  {
+    event.preventDefault();
+     $.ajax({
+      url:'upload_food_map',
+      type:'GET',
+      cache:true,
+      data: $('#sellFood').serialize()
+    }).done(function(data){
+      //$('#dynamic_modal').modal('hide');
+      alertify.alert('Data Uploaded to Foodmap successfully.');
+      $('#sellFood').trigger("reset");
+    });
+  }
+
+  
+</script>
+  </body>
+
+</html>

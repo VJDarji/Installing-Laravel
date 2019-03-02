@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Foodvilla Web app</title>
+
+    <!-- Bootstrap core CSS -->
+    
+    <?php echo Html::style('./resources/vendor/bootstrap/css/bootstrap.min.css'); ?>
+
+    <style type="text/css">
+      .row{line-height: 40px;}
+    </style>
+  </head>
+
+  <body onload="generate_food_map('<?php echo e($latitude); ?>','<?php echo e($longitude); ?>','<?php echo e($radius); ?>')">
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
+                
+                <a href="mealFinder/" style="margin-top: 10px;" class="btn btn-primary">Logout</a>&nbsp;&nbsp;
+                
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                
+                <ul class="nav navbar-nav">
+                    <li><a href="admin">Home</a></li>
+                    <li><a href="sell_food">Sell</a></li>
+                    <li><a href="select_seller">Order</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="change_password">Change Password</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+
+    <!-- Page Content -->
+    <div class="container">
+     
+    <div class="row"> 
+    <div id="foodMap" class="col-md-12 col-sm-12 col-xs-12" style="height: 350px">
+      
+    </div>
+    </div>     
+    <br>
+    <div class="row">
+
+  <form method="post" action="select_seller" >
+    <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+    <div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="row">
+          <div class="col-md-3 col-sm-4 col-xs-6 ">Your City</div>
+          <div class="col-md-4 col-sm-4 col-xs-6"><input type="text" name="city" class="form-control" required></div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3 col-sm-4 col-xs-6 ">Area Code</div>
+          <div class="col-md-4 col-sm-4 col-xs-6"><input type="number" name="area_code" class="form-control" min="0" required title="Enter only Number"></div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3 col-sm-4 col-xs-6 ">Radius</div>
+          <div class="col-md-4 col-sm-4 col-xs-4"><input type="number" name="radius" class="form-control" min="5" max="25" required></div>
+        </div>
+
+        
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-6"><input type="submit" name="search" class="btn btn-primary" value="search"></div>
+        </div>
+    </div>
+  </form>
+
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <form method="post" action="access_order" >
+        <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+        <select name="food_id" onchange="this.form.submit()" multiple="5" class="form-control">
+          
+          <?php foreach($user as $row): ?>
+          <option  value="<?php echo e($row->id); ?>" ><?php echo e($row->uploaded_name); ?></option>
+          <?php endforeach; ?>
+        </select>
+      </form>
+    </div>  
+
+    </div> 
+    
+    </div>
+    <!-- /.container -->
+
+    <!-- Bootstrap core JavaScript -->
+
+    <?php echo Html::script('./resources/vendor/jquery/jquery.min.js'); ?>
+
+   
+    <?php echo Html::script('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js'); ?> 
+
+    <?php echo Html::script('https://maps.googleapis.com/maps/api/js?key=AIzaSyD6hKknF8Y1NcCC6TjAhAc58A5esASpbVQ'); ?> 
+
+    <?php echo Html::script('./resources/vendor/bootstrap/js/bootstrap.bundle.min.js'); ?> 
+   
+    <?php echo Html::script('./resources/vendor/bootstrap/js/bootstrap.min.js'); ?> 
+
+<script type="text/javascript">
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (p) {
+      
+      //$('#latitude').val(p.coords.latitude);
+      //$('#longitude').val(p.coords.longitude);
+     // generate_food_map(p.coords.latitude,p.coords.longitude,25)
+     //alert(p.coords.latitude)
+    });
+} else {
+    alert('Geo Location feature is not supported in this browser.');
+}
+</script>
+
+  
+  <script type="text/javascript" language="javascript">
+
+  function get_user_custom_location()
+  {
+      $.ajax({
+        url:'user_location',
+        type:'GET',
+        cache:true,
+        data: {city:$('#city').val(), area_code:$('#area_code').val()}
+      }).done(function(data){
+        obj = JSON.parse(data);
+        generate_food_map(obj.lat,obj.lng,$('#radius').val())
+        
+      });
+  }
+
+
+  function generate_food_map(latitude, longitude, radius)
+  {
+      
+      var orginal_radius = radius;
+      var radius = radius * 1000;
+      var mapCenter = new google.maps.LatLng(latitude,longitude);
+      var map = new google.maps.Map(document.getElementById('foodMap'), {
+        'zoom': 16,
+        'center': mapCenter,
+        'mapTypeId': google.maps.MapTypeId.ROADMAP
+      });
+    
+    // Create marker 
+      var marker = new google.maps.Marker({
+        map: map,
+        position: mapCenter,
+        title: 'My Current Location'
+      }); 
+
+
+      $.ajax({
+          url:'get_all_seller',
+          type:'GET',
+          cache:true,
+          data: {radius:orginal_radius}
+        }).done(function(data){
+          
+          obj = JSON.parse(data);
+          for(var i=0;i<obj.length;i++)
+          {
+            var mapCenter = new google.maps.LatLng(obj[i].latitude, obj[i].longitude);
+            var marker = new google.maps.Marker({
+            map: map,
+            position: mapCenter,
+            title: obj[i].uploaded_name
+            });
+          }
+        
+      });
+
+      // Add circle overlay and bind to marker
+      var circle = new google.maps.Circle({
+        map: map,
+        radius: radius,    // 10 miles in metres
+        fillColor: '#FFF'
+      });
+      circle.bindTo('center', marker, 'position');
+  }
+
+
+  function access_order(seller_id)
+  {
+      
+      $.ajax({
+        url:'access_order',
+        type:'GET',
+        cache:true,
+        data: {seller_id:seller_id}
+      }).done(function(data){
+        //$('#dynamic_modal').modal('hide');
+        //alert(data);
+        
+      });
+  }
+  
+  </script>
+  
+  </body>
+
+</html>

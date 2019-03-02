@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Foodvilla Web app</title>
+
+    <!-- Bootstrap core CSS -->
+    
+    <?php echo Html::style('./resources/vendor/bootstrap/css/bootstrap.min.css'); ?>
+
+    <?php echo Html::style('./resources/vendor/bootstrap/css/alertify.core.css'); ?>
+
+    <?php echo Html::style('./resources/vendor/bootstrap/css/alertify.default.css'); ?>
+
+    <style type="text/css">
+      .row{line-height: 40px;}
+    </style>
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
+                <a href="signin" style="margin-top: 10px;" class="btn btn-primary">Login</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+
+            
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+
+    <!-- Page Content -->
+    <div class="container">
+     
+     <div class="modal fade"  id="dynamic_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static"></div>
+     
+           
+      <br>
+      
+      <div class="col-md-12"><hr style="border: 1px solid black;"></div>
+      
+      <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">Enter Register Info:</div>
+            <div class="panel-body">
+      
+
+      <form id="addUser" method="post" onsubmit="return store_user(event)" >
+        <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2">
+            
+            <div class="row">
+              <div class="col-md-5 col-sm-4 col-xs-6" style="margin-top: 0px">Name</div>
+              <div class="col-md-5 col-sm-5 col-xs-6"><input type="text" name="name" id="name" class="form-control" onkeypress=" return ValidateAlpha(event)" autocomplete="off" required title="Name should only contain letters"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-5 col-sm-4 col-xs-6">Telephone</div>
+              <div class="col-md-5 col-sm-5 col-xs-6"><input type="tel" name="phone" pattern="[0-9]{2} [0-9]{4}-[0-9]{5}" id="phone" class="form-control" required autocomplete="off" title="format will be (+94) 7777-34542"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-5 col-sm-4 col-xs-6">NIC</div>
+              <div class="col-md-5 col-sm-5 col-xs-6"><input type="text" name="nic" id="nic" class="form-control" onkeypress=" return ValidateAlphaNumeric(event)" maxlength="10" required autocomplete="off" title="Nic should be alpha numeric of 10 character"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-5 col-sm-4 col-xs-6">Email</div>
+              <div class="col-md-5 col-sm-5 col-xs-6"><input type="email" name="email" id="email" class="form-control" required autocomplete="off"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-5 col-sm-4 col-xs-6">Password</div>
+              <div class="col-md-5 col-sm-5 col-xs-6"><input type="text" name="password" id="password" class="form-control" required autocomplete="off"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-5 col-sm-4 col-xs-6">Confirm Password</div>
+              <div class="col-md-5 col-sm-5 col-xs-6"><input type="text" name="cpassword" id="cpassword" class="form-control" required autocomplete="off"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-4"><input type="submit" class="btn btn-primary" value="Submit" ></div>
+            </div>
+          </div>
+        </div><br>
+      
+    </form>
+  </div>
+</div>
+</div>
+      
+      <?php echo $__env->make('footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
+    
+    <!-- /.container -->
+
+    <!-- Bootstrap core JavaScript -->
+
+    <?php echo Html::script('./resources/vendor/jquery/jquery.min.js'); ?>
+
+   
+    <?php echo Html::script('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js'); ?> 
+
+    <?php echo Html::script('./resources/vendor/bootstrap/js/bootstrap.bundle.min.js'); ?> 
+   
+    <?php echo Html::script('./resources/vendor/bootstrap/js/bootstrap.min.js'); ?> 
+
+    <?php echo Html::script('./resources/vendor/bootstrap/js/alertify.min.js'); ?>
+
+
+  
+    <script type="text/javascript" language="javascript">
+  
+
+  //FUNCTION FOR TAB EDUCATIONAL QUALIFICATION
+  //28-05-16
+
+  function modal_signup(){
+    //$("#employee").append(preloader);
+
+    $.ajax({
+      url:'modal_signup',
+      type:'GET',
+      data:{  }
+    }).done(function(data){
+      
+      $('#dynamic_modal').modal('show');
+      $('#dynamic_modal').html(data);
+      
+    });
+  }
+
+  function modal_signin(){
+    //$("#employee").append(preloader);
+
+    $.ajax({
+      url:'modal_signin',
+      type:'GET',
+      data:{  }
+    }).done(function(data){
+      
+      $('#dynamic_modal').modal('show');
+      $('#dynamic_modal').html(data);
+      
+    });
+  }
+
+  var error = 0;
+  var error1 = 0;
+  var error2 = 0;
+  function store_user(event)
+  {
+    event.preventDefault();
+
+    $.ajax({
+        url:'check_nic',
+        type:'GET',
+        cache:true,
+        data: {nic:$('#nic').val()}
+        }).done(function(data){
+          
+        if(data>0)
+        { 
+          alertify.alert('Nic already exist in the system')
+          error1 = 1;  
+        }  
+        else
+          error1 = 0;   
+    }); 
+
+    $.ajax({
+        url:'check_email',
+        type:'GET',
+        cache:true,
+        data: {email:$('#email').val()}
+        }).done(function(data){
+          
+        if(data>0)
+        { 
+          alertify.alert('Email already exist in the system')
+          error2 = 1;  
+        } 
+        else
+          error2 = 0    
+    });
+
+    if(error1 == 0 && error2 == 0)
+      error = 0;
+    else
+      error = 1;
+
+    if(error == 1)
+      return false;
+    
+
+    if($('#password').val() != $('#cpassword').val() )
+    {
+      alertify.alert('Password and confirm password does not match');
+      
+    }
+    else if(error == 0)
+    {  
+      
+     $.ajax({
+        url:'store_user',
+        type:'GET',
+        cache:true,
+        data: $('#addUser').serialize()
+        }).done(function(data){
+          
+            window.location = "admin";    
+      });
+    }
+  }
+
+  function check_login(event)
+  {
+      $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+
+      event.preventDefault();
+      $.ajax({
+        url:'check_login',
+        type:'GET',
+        cache:true,
+        data: $('#addUser').serialize()
+      }).done(function(data){
+        $('#dynamic_modal').modal('hide');
+        if(data>0)
+          window.location = "admin";
+        else
+          alert('Login failed')
+      });
+  }
+
+  function ValidateAlphaNumeric(evt)
+  {   //alertify.alert("This is an alert dialog");
+        var keyCode = (evt.which) ? evt.which : evt.keyCode;
+        
+        if ((keyCode < 48 || keyCode > 57) && (keyCode < 65 || keyCode > 90) && (keyCode < 97 || keyCode > 123) && keyCode != 32 && keyCode != 46 && keyCode != 39 && keyCode != 37 && keyCode != 9 && keyCode != 8)
+         
+        return false;
+            return true;
+  }
+
+  function ValidateAlpha(evt)
+  {
+        var keyCode = (evt.which) ? evt.which : evt.keyCode;
+
+        if ((keyCode < 65 || keyCode > 90) && (keyCode < 97 || keyCode > 123) && keyCode != 32 && keyCode != 46 && keyCode != 39 && keyCode != 37 && keyCode != 9 && keyCode != 8)
+         
+        return false;
+            return true;
+  }
+
+</script>
+  </body>
+
+</html>

@@ -1,0 +1,12 @@
+<?php $__env->startSection('main_content'); ?>
+	<?php foreach($customers as $customer): ?>
+		<?php echo e($customer->name); ?>
+
+	<?php endforeach; ?>
+
+	<?php echo e($customers->links()); ?>
+
+<?php $__env->stopSection(); ?>	
+
+
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

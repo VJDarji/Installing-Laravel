@@ -1,0 +1,49 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	<h3 class="modal-title">Add New Duty</h3>
+</div>
+<form id="addDuty" method="post" action="/store_employee">
+<input type="hidden" name="employee_id" value="<?php echo e($employee_id); ?>">
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Select Duty Descripton</label></div>
+		<div class="col-md-8">
+			<select class="form-control" name="duty_id" id="duty_id">
+				<?php foreach($duty as $row): ?>
+					<option value="<?php echo e($row->id); ?>"><?php echo e($row->duty_desc); ?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Start Date</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="start_date" id="start_date"></div>
+	</div><br>
+	
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">End Date</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="end_date" id="end_date"></div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Memo No</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="memo_no" id="memo_no"></div>
+	</div><br>
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Memo Date</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="memo_date" id="memo_date"></div>
+	</div><br>
+
+</div>
+</form>
+
+	<div class="modal-footer">
+		<button type="button" class="btn default" data-dismiss="modal">Close</button>
+		<input type="button" class="btn blue" data-dismiss="modal" onclick="store_duty()" value="Save Duty" >
+	</div>
+</div>
+</div>
+

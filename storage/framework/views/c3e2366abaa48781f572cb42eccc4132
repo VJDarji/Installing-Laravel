@@ -1,0 +1,23 @@
+<table class="table table-bordered">
+			<tr>
+				<td>Employee Name</td>
+				<td>Employee Department</td>
+				<td>Employee Designation</td>
+				<td>Date of Birth</td>
+				<td>Details</td>
+			</tr>
+
+			
+			<?php foreach($employees as $employee): ?>
+				<tr>
+					<td><?php echo e($employee->name_english); ?></td>
+					<td><?php echo e($employee->dept); ?></td>
+					<td><?php echo e($employee->designation_english); ?></td>
+					<td><?php echo e(date('d/m/Y',strtotime($employee->date_of_birth))); ?></td>
+					<td></td>
+				</tr>
+			<?php endforeach; ?>
+			
+		</table>
+
+<div class="col-md-12" align="center"><?php echo $employees->render(); ?></div>

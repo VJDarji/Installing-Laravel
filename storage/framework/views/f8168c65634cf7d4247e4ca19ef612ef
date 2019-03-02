@@ -1,0 +1,35 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	<h3 class="modal-title">Edit Duty/R</h3>
+</div>
+<form id="editDuty" method="post" action="store_department">
+
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-3" align="right"><label style="margin-top: 5px;">Duty Description</label></div>
+		<div class="col-md-8"><input type="text" class="form-control" name="duty_desc" id="duty_desc" value="<?php echo e($duty->duty_desc); ?>"  ></div>
+	</div><br>
+
+	<div class="row">	
+		<div class="col-md-3" align="right"><label style="margin-top: 5px;">Allowance</label></div>
+		<div class="col-md-3"><input type="text" class="form-control" name="allowance" id="allowance" value="<?php echo e($duty->allowance); ?>"></div>
+	</div><br>
+	
+	<div class="row">	
+		<div class="col-md-3" align="right"><label style="margin-top: 5px;">Mobile Allowance</label></div>
+		<div class="col-md-3"><input type="text" class="form-control" name="mobile_allowance" id="mobile_allowance" value="<?php echo e($duty->mobile_allowance); ?>"></div>
+	</div>
+	<input type="hidden" name="id" value="<?php echo e($duty->id); ?>">
+		
+</div>
+</form>
+
+	<div class="modal-footer">
+		<button type="button" class="btn default" data-dismiss="modal">Close</button>
+		<input type="button" class="btn blue" data-dismiss="modal" onclick="update_duty()" value="Update Deuty" >
+	</div>
+</div>
+</div>
+

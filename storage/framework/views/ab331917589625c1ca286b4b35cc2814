@@ -1,0 +1,100 @@
+<div class="modal-dialog modal-lg">
+	<div class="modal-content">
+		<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	<h3 class="modal-title">Add New Employee</h3>
+</div>
+<form id="addEmployee" method="post" action="/store_employee">
+
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Name(English)</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="name_english" id="name_english"></div>
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Name(Bangla)</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="name_bangla" id="name_bangla"></div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Father Name</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="father_name" id="father_name"></div>
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Mother Name</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="mother_name" id="mother_name"></div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Designation</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="designation_english" id="designation_english"></div>
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">NID</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="nid" id="nid"></div>
+	</div><br>
+
+	<div class="row">
+		
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Employee Type</label></div>
+		<div class="col-md-4">
+			<select class="form-control" name="employee_type" id="employee_type">
+				<option value="Teacher">Teacher</option>
+				<option value="Officer">Officer</option>
+				<option value="Staff">Staff</option>
+			</select>
+		</div>
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Dept/Section</label></div>
+		<div class="col-md-4"><select class="form-control" name="dept" id="dept">
+				<?php foreach($dept as $row): ?>
+					<option value="<?php echo e($row->department_short_name); ?>"><?php echo e($row->department_short_name); ?></option>
+				<?php endforeach; ?>
+				</select>
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Mobile No</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="mobile_no" id="mobile_no"></div>
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Email</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="email" id="email"></div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Marital Status</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="marital_status" id="marital_status"></div>
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Religion</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="religion" id="religion"></div>
+	</div><br>
+
+
+	<div class="row">
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Gender</label></div>
+		<div class="col-md-4"><select class="form-control" name="gender" id="gender">
+		<option value="Male">Male</option>
+		<option value="Female">Female</option></select></div>
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Nationality</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="nationality" id="nationality"></div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Home District</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="home_district" id="home_district"></div>
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Date of Birth</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="date_of_birth" id="date_of_birth"></div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Present Address</label></div>
+		<div class="col-md-10"><input type="text" class="form-control" name="present_address" id="present_address"></div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-2" align="right"><label style="margin-top: 5px;">Permanent Address</label></div>
+		<div class="col-md-10"><input type="text" class="form-control" name="permanent_address" id="permanent_address"></div>
+	</div><br>
+
+</div>
+</form>
+
+	<div class="modal-footer">
+		<button type="button" class="btn default" data-dismiss="modal">Close</button>
+		<input type="button" class="btn blue" data-dismiss="modal" onclick="store_employee()" value="Save Employee" >
+	</div>
+</div>
+</div>
+

@@ -1,0 +1,50 @@
+<div class="portlet box blue-hoki">
+<div class="portlet-title"></div>
+<div class="portlet-body">
+<a href="#experience" class="btn green" onclick="add_new_experience('<?php echo e($employee_id); ?>')"><i class="fa fa-plus fa-2x"></i> Add</a><br><br>
+<div class="table-responsive">	
+	<table border="1" class="table table-striped table-bordered table-advance table-hover" style="font-size: 12px;" >
+		<thead>
+			<tr>
+				<th class="col-md-1" style="vertical-align:middle;text-align: center;" rowspan="2">SI</th>
+				<th class="col-md-4" style="vertical-align:middle;text-align: center;" rowspan="2">Designation &  Institute Name</th>
+				<th class="col-md-3" style="vertical-align:middle;text-align: center;" rowspan="2">Grade & Scalle Accorinding to Payscale </th>
+				<th class="col-md-3" colspan="3"  style="vertical-align:middle;text-align: center;">Service Length</th>
+				<th rowspan="2"></th>
+				<th rowspan="2"></th>
+			</tr>
+			<tr>
+				
+				<th>Joining Date</th>
+				<th>Resign Date</th>
+				<th>Length</th>
+
+			</tr>
+
+
+		</thead>		
+		
+		<tbody style="font-family: "Open Sans", sans-serif;font-weight:bold">
+			
+			<?php if($cnt = 1): ?> 
+			<?php endif; ?>
+			
+			<?php foreach($experience as $row): ?>
+
+				<tr >
+					<td><?php echo e($cnt++); ?></td>
+					<td><?php echo e($row->designation.' & '.$row->institute_name); ?></td>
+					<td><?php echo e($row->scale.' & '.$row->grade); ?></td>
+					<td><?php echo e($row->joining_date); ?></td>
+					<td><?php echo e($row->resign_date); ?></td>
+					<td></td>
+					<td align="center"><a href="#experience" onclick="edit_experience('<?php echo e($row->id); ?>')"><i class="fa fa-edit fa-2x"></i></td>
+					<td align="center"><a href="#experience" onclick="delete_experience('<?php echo e($row->id); ?>')"><i class="fa fa-trash-o fa-2x"></i></a></td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>		
+	</table>
+	
+</div>
+</div>	
+</div>

@@ -1,0 +1,30 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	<h3 class="modal-title">Edit Department</h3>
+</div>
+<form id="editDepartment" method="post" action="store_department">
+
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-3" align="right"><label style="margin-top: 5px;">Short Name</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="department_short_name" id="department_short_name"  value="<?php echo e($department->department_short_name); ?>" ></div>
+	</div><br>
+
+	<div class="row">	
+		<div class="col-md-3" align="right"><label style="margin-top: 5px;">Full Name</label></div>
+		<div class="col-md-8"><input type="text" class="form-control" name="department_full_name" id="department_full_name" value="<?php echo e($department->department_full_name); ?>"></div>
+	</div><br>
+	<input type="hidden" name="id" value="<?php echo e($department->id); ?>">
+		
+</div>
+</form>
+
+	<div class="modal-footer">
+		<button type="button" class="btn default" data-dismiss="modal">Close</button>
+		<input type="button" class="btn blue" data-dismiss="modal" onclick="update_department()" value="Update Department" >
+	</div>
+</div>
+</div>
+

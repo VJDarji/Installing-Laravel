@@ -1,0 +1,40 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	<h3 class="modal-title">Edit Salary Setting</h3>
+</div>
+<form id="editSalarySetting" method="post" action="/store_employee">
+<input type="hidden" name="id" value="<?php echo e($salary_setting->id); ?>">
+<div class="modal-body">
+	
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Basic Salary</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="basic_salary" id="basic_salary" value="<?php echo e($salary_setting->basic_salary); ?>"></div>
+	</div><br>
+	
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Education Allowance</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="education_allowance" id="education_allowance" value="<?php echo e($salary_setting->education_allowance); ?>"></div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Personal Pay</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="pp" id="pp" value="<?php echo e($salary_setting->pp); ?>"></div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Providend fund</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" maxlength="6" name="pf" id="pf" value="<?php echo e($salary_setting->pf); ?>"></div>
+	</div><br>
+	
+</div>
+</form>
+
+	<div class="modal-footer">
+		<button type="button" class="btn default" data-dismiss="modal">Close</button>
+		<input type="button" class="btn blue" data-dismiss="modal" onclick="update_salary_setting()" value="Update Salary Setting" >
+	</div>
+</div>
+</div>
+

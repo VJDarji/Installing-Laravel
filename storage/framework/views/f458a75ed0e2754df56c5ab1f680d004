@@ -1,0 +1,146 @@
+<?php $__env->startSection('page_header'); ?>
+<h3 class="page-title">
+					Employee Page<small></small>
+					</h3>
+					<ul class="page-breadcrumb breadcrumb">
+						<li class="btn-group">
+							<a class="btn green" href="#" data-target="#ajax" onclick="add_new_employee()" >Add New Employee</a>	
+						</li>
+						<li>
+							<i class="fa fa-home"></i><a href="index">Home</a><i class="fa fa-angle-right"></i>
+						</li>
+						<li>
+							<a href="employee">Employee</a>
+						</li>
+						
+					</ul>
+
+					<div class="modal fade bs-modal-lg" id="ajaxModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+							</div>
+						</div>
+					</div>
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('main_content'); ?>
+	<div id="searchEmployee">
+		<div class="row">
+			<div class="col-md-1" style="margin-top: 5px;"><label>Dept./Section</label></div>
+			<div class="col-md-2">
+				<select class="form-control" id="s_dept">
+					<?php foreach($dept as $row): ?>
+						<option value="<?php echo e($row->department_short_name); ?>"><?php echo e($row->department_short_name); ?></option>
+					<?php endforeach; ?> 
+				</select>
+			</div>
+
+			<div class="col-md-3">
+				<input type="button" class="btn btn-success" onclick="searchEmployee()" value="Search Employee">
+			</div>
+		</div>
+	</div>
+	
+	<br><br>
+	<div id="employee" class="col-md-12" >
+	 	<table class="table table-bordered">
+			<tr>
+				<td>Employee Name</td>
+				<td>Employee Department</td>
+				<td>Employee Designation</td>
+				<td>Date of Birth</td>
+				<td>Details</td>
+			</tr>
+
+			
+			<?php foreach($employees as $employee): ?>
+				<tr>
+					<td><?php echo e($employee->name_english); ?></td>
+					<td><?php echo e($employee->dept); ?></td>
+					<td><?php echo e($employee->designation_english); ?></td>
+					<td><?php echo e(date('d/m/Y',strtotime($employee->date_of_birth))); ?></td>
+					<td></td>
+				</tr>
+			<?php endforeach; ?>
+			
+		</table>
+		
+		<div class="col-md-12" align="center"><?php echo $employees->render(); ?></div>
+	</div>
+	
+<?php $__env->stopSection(); ?>
+<?php echo Html::script('./resources/assets/jquery.min.js'); ?>
+
+<?php echo Html::style('./resources/assets/loader.css'); ?>
+
+
+<script type="text/javascript">
+	var preloader = '<div id="loader-wrapper" ><div id="loader"></div></div>';
+	var page =1;
+	   
+	   $(document).on('click','.pagination a', function(e){
+			e.preventDefault();
+			page = $(this).attr('href').split('page=')[1];
+			getEmployees(page)
+		});
+	
+
+	
+	
+	function getEmployees(page){
+		var s_dept = $('#s_dept').val();
+		$("#employee").append(preloader);
+		$.ajax({
+
+			url : 'paginateEmployees?page='+page+'&dept='+s_dept
+
+		}).done(function(data){
+			$('#employee').html(data);
+			//location.hash = page;
+		});
+	}
+
+	function searchEmployee(){
+		var s_dept = $('#s_dept').val();
+		$("#employee").append(preloader);
+		$.ajax({
+
+			url : 'searchEmployees?page='+page+'&dept='+s_dept
+			
+		}).done(function(data){
+			//alert(data)
+			$('#employee').html(data);
+			//location.hash = page;
+		});
+	}
+
+	function add_new_employee(){
+		$.ajax({
+			url:'add_new_employee',
+			type:'GET',
+			data:{ id: 1 }
+		}).done(function(data){
+			
+			$('.modal-content').html(data);
+			$('#ajaxModal').modal('show');
+		});
+	}
+
+	function store_employee(){
+		alert($('#name_english').val())
+		$.ajax({
+			url:'store_employee',
+			type:'GET',
+			data: $('#addEmployee').serialize()
+		}).done(function(data){
+			$('#ajaxModal').modal('hide');
+			alert(data);
+
+		});
+	}
+	
+</script>	
+
+
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,53 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	<h3 class="modal-title">Edit Duty</h3>
+</div>
+<form id="editDuty" method="post" action="/store_employee">
+<input type="hidden" name="id" value="<?php echo e($id); ?>">
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Select Duty Descripton<?php echo e($employee_duty->id); ?></label></div>
+		<div class="col-md-8">
+			<select class="form-control" name="duty_id" id="duty_id">
+				<?php foreach($duty as $row): ?>
+					<?php if($row->id == $employee_duty->id): ?>
+						<option value="<?php echo e($row->id); ?>" selected="selected"><?php echo e($row->duty_desc); ?></option>
+					<?php else: ?>
+						<option value="<?php echo e($row->id); ?>"><?php echo e($row->duty_desc); ?></option>
+					<?php endif; ?>	
+				<?php endforeach; ?>
+			</select>
+		</div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Start Date</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="start_date" id="start_date" value="<?php echo e($employee_duty->start_date); ?>"></div>
+	</div><br>
+	
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">End Date</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="end_date" id="end_date" value="<?php echo e($employee_duty->end_date); ?>"></div>
+	</div><br>
+
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Memo No</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="memo_no" id="memo_no" value="<?php echo e($employee_duty->memo_no); ?>"></div>
+	</div><br>
+	<div class="row">
+		<div class="col-md-4" align="right"><label style="margin-top: 5px;">Memo Date</label></div>
+		<div class="col-md-4"><input type="text" class="form-control" name="memo_date" id="memo_date" value="<?php echo e($employee_duty->memo_date); ?>"></div>
+	</div><br>
+
+</div>
+</form>
+
+	<div class="modal-footer">
+		<button type="button" class="btn default" data-dismiss="modal">Close</button>
+		<input type="button" class="btn blue" data-dismiss="modal" onclick="update_duty()" value="Update Duty" >
+	</div>
+</div>
+</div>
+

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Foodvilla Web app</title>
+
+    <!-- Bootstrap core CSS -->
+    
+    <?php echo Html::style('./resources/vendor/bootstrap/css/bootstrap.min.css'); ?>
+
+    <style type="text/css">
+      .row{line-height: 40px;}
+    </style>
+  </head>
+
+  <body>
+
+
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
+                
+                <a href="signup" style="margin-top: 10px;" class="btn btn-primary">Signup</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+
+            
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+
+    <!-- Page Content -->
+    <div class="container">
+     
+     <div class="modal fade"  id="dynamic_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static"></div>
+     
+           
+      <br>
+      
+      <div class="col-md-12"><hr style="border: 1px solid black;"></div>
+      
+      <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">Retrieve Password</div>
+            <div class="panel-body">
+      
+
+      <form id="addUser" method="post" action="retrieve_password">
+        <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+        <div class="row">
+          <div class="col-md-12">
+            
+            <div class="row">
+              <div class="col-md-3 col-sm-3 col-xs-4">Email</div>
+              <div class="col-md-5 col-sm-5 col-xs-7"><input type="email" name="email" id="email" class="form-control" required></div>
+            </div>
+
+            
+
+            <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-4"></div>
+                <div class="col-md-3 col-sm-3 col-xs-4"><input type="submit" class="btn btn-primary" value="Retrieve Password" ></div>
+            </div>
+            <div class="row" align="center"><?php echo e($msg); ?></div>
+          </div>
+        </div>
+      
+    </form>
+  </div>
+</div>
+</div>
+      
+      <div class="col-md-12 col-sm-12" style="border: 1px solid black;min-height: 100px;">
+        <div class="row">
+            <div class="col-sm-6 col-xs-6 col-md-6" >
+              <div style=" margin: auto;width: 96%;border: 1px solid black;margin-top: 10px;min-height: 80px;">links to social pages</div>
+            </div>
+            
+            <div class="col-sm-6 col-xs-6 col-md-6" >
+              <div style=" margin: auto;width: 96%;border: 1px solid black;margin-top:10px;min-height: 80px;">Copyright and other footnote</div>
+            </div>
+
+        </div>
+      </div>
+      <br><br>
+    
+    <!-- /.container -->
+
+    <!-- Bootstrap core JavaScript -->
+
+    <?php echo Html::script('./resources/vendor/jquery/jquery.min.js'); ?>
+
+   
+    <?php echo Html::script('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js'); ?> 
+
+    <?php echo Html::script('./resources/vendor/bootstrap/js/bootstrap.bundle.min.js'); ?> 
+   
+    <?php echo Html::script('./resources/vendor/bootstrap/js/bootstrap.min.js'); ?> 
+  
+    <script type="text/javascript" language="javascript">
+  
+  function check_login(event)
+  {
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      event.preventDefault();
+      $.ajax({
+        url:'check_login',
+        type:'GET',
+        cache:true,
+        data: $('#addUser').serialize()
+      }).done(function(data){
+        $('#dynamic_modal').modal('hide');
+        if(data>0)
+          window.location = "admin";
+        else
+          alert('Login failed')
+      });
+  }
+
+</script>
+  </body>
+
+</html>

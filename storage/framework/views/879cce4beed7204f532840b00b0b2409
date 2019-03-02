@@ -1,0 +1,447 @@
+<?php $__env->startSection('page_header'); ?>
+
+					<ul class="page-breadcrumb breadcrumb">
+						<li class="btn-group">
+							
+								
+						</li>
+						<li>
+							<i class="fa fa-home"></i><a href="index">Home</a><i class="fa fa-angle-right"></i>
+						</li>
+						<li>
+							<a href="employee">Employee</a>
+						</li>
+						
+					</ul>
+					
+<div class="modal fade" style="overflow-y:scroll;" id="dynamic_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static"></div>
+					
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('main_content'); ?>
+	
+
+	<div class="portlet box green">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-cogs"></i>All Employees List
+			</div>
+			<div class="tools">
+				<a href="javascript:;" class="collapse"></a>
+			</div>
+		</div>
+
+		<div class="portlet-body" id="div_employee_content">
+			<div><a class="btn green" href="#" data-target="#ajax" onclick="add_new_employee()" ><i class="fa fa-plus fa-2x"></i> Add New Employee</a></div><br>
+			<div id="searchEmployee">
+				<div class="row">
+					<div class="col-md-1" style="margin-top: 5px;"><label>Dept./Section</label></div>
+					<div class="col-md-2">
+						<select class="form-control" id="s_dept">
+							<option value="">Select</option>
+							<?php foreach($dept as $row): ?>
+								<option value="<?php echo e($row->department_short_name); ?>"><?php echo e($row->department_short_name); ?></option>
+							<?php endforeach; ?> 
+						</select>
+					</div>
+
+					<div class="col-md-3">
+						<input type="button" class="btn btn-success" onclick="searchEmployee('1')" value="Search Employee">
+					</div>
+				</div>
+			</div><br>
+
+			<div id="employee"  >
+				<?php echo $__env->make('employee.showEmployees',['employees'=>$employees], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>	
+			</div>	
+			<br><br><br>
+			
+		</div>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo Html::script('./resources/assets/jquery.min.js'); ?>
+
+<?php echo Html::style('./resources/assets/loader.css'); ?>
+
+
+<script type="text/javascript">
+	var preloader = '<div id="loader-wrapper" ><div id="loader"></div></div>';
+	var page =1;
+	   
+	   $(document).on('click','.pagination a', function(e){
+			e.preventDefault();
+			page = $(this).attr('href').split('page=')[1];
+			getEmployees(page)
+		});
+	
+
+	
+	
+	function getEmployees(page){
+		var s_dept = $('#s_dept').val();
+		$("#employee").append(preloader);
+		$.ajax({
+
+			url : 'showEmployees?page='+page+'&dept='+s_dept
+
+		}).done(function(data){
+			$('#employee').html(data);
+			//location.hash = page;
+		});
+	}
+
+	function searchEmployee(page_start){
+		page = page_start;
+		var s_dept = $('#s_dept').val();
+		$("#employee").append(preloader);
+		$.ajax({
+
+			url : 'showEmployees?page='+page+'&dept='+s_dept
+			
+		}).done(function(data){
+			//alert(data)
+			$('#employee').html(data);
+			//location.hash = page;
+		});
+	}
+
+	function add_new_employee(){
+		//$("#employee").append(preloader);
+		$.ajax({
+			url:'add_new_employee',
+			type:'GET',
+			data:{ id: 1 }
+		}).done(function(data){
+			
+			$('#dynamic_modal').html(data);
+			$('#dynamic_modal').modal('show');
+			
+		});
+	}
+
+	function store_employee(){
+		
+		$.ajax({
+			url:'store_employee',
+			type:'GET',
+			cache:true,
+			data: $('#addEmployee').serialize()
+		}).done(function(data){
+			//$('#ajaxModal').modal('hide');
+			//alert(data);
+			
+		});
+	}
+
+	function employee_details(id){
+		$("#employee").append(preloader);
+		$.ajax({
+			url	: 'employee_details',
+			type: 'GET',
+			data: {id:id}
+		}).done(function(data){
+
+			$('#div_employee_content').html(data);
+		})
+	}
+
+	//FUNCTION FOR TAB EDUCATIONAL QUALIFICATION
+	//28-05-16
+
+	function add_new_education_qualification(employee_id){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'add_new_education_qualification',
+			type:'GET',
+			data:{ employee_id: employee_id }
+		}).done(function(data){
+			
+			$('#dynamic_modal').modal('show');
+			$('#dynamic_modal').html(data);
+		});
+	}
+
+	function store_education_qualification(){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'store_education_qualification',
+			type:'GET',
+			cache:true,
+			data: $('#addEducationQualification').serialize()
+		}).done(function(data){
+			//$('#ajaxModal').modal('hide');
+			get_educational_qualification(data)
+			
+		});
+	}
+
+	function get_educational_qualification(employee_id){
+		$.ajax({
+			url	: 'get_educational_qualification',
+			type: 'GET',
+			data: {employee_id:employee_id}
+		}).done(function(data){
+
+			$('#tab_1_1').html(data);
+		})
+	}
+
+	function edit_educational_qualification(id){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'edit_educational_qualification',
+			type:'GET',
+			data:{ id: id }
+		}).done(function(data){
+			
+			$('#dynamic_modal').modal('show');
+			$('#dynamic_modal').html(data);
+			
+			
+		});
+	}
+
+	function update_education_qualification(){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'update_education_qualification',
+			type:'GET',
+			cache:true,
+			data: $('#editEducationQualification').serialize()
+		}).done(function(data){
+			//$('#ajaxModal').modal('hide');
+			get_educational_qualification(data)
+			
+		});
+	}
+
+	function delete_educational_qualification(id){
+		
+		bootbox.confirm("Are you sure to delete the selected Record?", function(result)
+		{
+			if(result) 
+			{
+				$.ajax({
+					url:'delete_educational_qualification',
+					type:'GET',
+					cache:true,
+					data: {id:id}
+				}).done(function(data){
+					
+					get_educational_qualification(data)
+				});
+			}
+		});
+	}
+		
+
+	//FUNCTION FOR TAB EXPERIENCE
+	//29-05-16
+
+	function add_new_experience(employee_id){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'add_new_experience',
+			type:'GET',
+			data:{ employee_id: employee_id }
+		}).done(function(data){
+			
+			$('#dynamic_modal').modal('show');
+			$('#dynamic_modal').html(data);
+		});
+	}
+
+	function store_experience(){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'store_experience',
+			type:'GET',
+			cache:true,
+			data: $('#addExperience').serialize()
+		}).done(function(data){
+			get_experience(data)
+		});
+	}
+
+	function get_experience(employee_id){
+		$.ajax({
+			url	: 'get_experience',
+			type: 'GET',
+			data: {employee_id:employee_id}
+		}).done(function(data){
+
+			$('#tab_1_3').html(data);
+		})
+	}
+
+	function edit_experience(id){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'edit_experience',
+			type:'GET',
+			data:{ id: id }
+		}).done(function(data){
+			//alert(data)
+			$('#dynamic_modal').modal('show');
+			$('#dynamic_modal').html(data);
+			
+			
+		});
+	}
+
+	function update_experience(){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'update_experience',
+			type:'GET',
+			cache:true,
+			data: $('#editExperience').serialize()
+		}).done(function(data){
+			//$('#ajaxModal').modal('hide');
+			get_experience(data)
+			
+		});
+	}
+
+	function delete_experience(id){
+		
+		bootbox.confirm("Are you sure to delete the selected Record?", function(result)
+		{
+			if(result) 
+			{
+				$.ajax({
+					url:'delete_experience',
+					type:'GET',
+					cache:true,
+					data: {id:id}
+				}).done(function(data){
+					
+					get_experience(data)
+				});
+			}
+		});
+	}
+
+
+	//FUNCTION FOR TAB EXPERIENCE
+	//31-05-16
+
+	function add_new_duty(employee_id){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'employee/add_new_duty',
+			type:'GET',
+			data:{ employee_id: employee_id }
+		}).done(function(data){
+			
+			$('#dynamic_modal').modal('show');
+			$('#dynamic_modal').html(data);
+		});
+	}
+
+	function store_duty(){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'employee/store_duty',
+			type:'GET',
+			cache:true,
+			data: $('#addDuty').serialize()
+		}).done(function(data){
+			get_duty(data)
+		});
+	}
+
+	function get_duty(employee_id){
+		$.ajax({
+			url	: 'employee/get_duty',
+			type: 'GET',
+			data: {employee_id:employee_id}
+		}).done(function(data){
+
+			$('#tab_1_4').html(data);
+		})
+	}
+
+	function edit_duty(id){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'employee/edit_duty',
+			type:'GET',
+			data:{ id: id }
+		}).done(function(data){
+			//alert(data)
+			$('#dynamic_modal').modal('show');
+			$('#dynamic_modal').html(data);
+			
+			
+		});
+	}
+
+	function update_duty(){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'employee/update_duty',
+			type:'GET',
+			cache:true,
+			data: $('#editDuty').serialize()
+		}).done(function(data){
+			//$('#ajaxModal').modal('hide');
+			get_duty(data)
+			
+		});
+	}
+
+	function delete_duty(id){
+		
+		bootbox.confirm("Are you sure to delete the selected Record?", function(result)
+		{
+			if(result) 
+			{
+				$.ajax({
+					url:'employee/delete_duty',
+					type:'GET',
+					cache:true,
+					data: {id:id}
+				}).done(function(data){
+					
+					get_duty(data)
+				});
+			}
+		});
+	}
+
+	function salary_setting(employee_id)
+	{
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'employee/salary_setting',
+			type:'GET',
+			data:{ employee_id: employee_id }
+		}).done(function(data){
+			
+			$('#dynamic_modal').modal('show');
+			$('#dynamic_modal').html(data);
+		});
+	}
+
+	function update_salary_setting(){
+		$("#employee").append(preloader);
+		$.ajax({
+			url:'employee/update_salary_setting',
+			type:'GET',
+			cache:true,
+			data: $('#editSalarySetting').serialize()
+		}).done(function(data){
+			$('#dynamic_modal').modal('hide');
+			//get_duty(data)
+			
+		});
+	}
+
+</script>
+
+
+
+<?php echo $__env->make('../master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

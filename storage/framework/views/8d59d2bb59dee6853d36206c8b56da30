@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Foodvilla Web app</title>
+
+    <!-- Bootstrap core CSS -->
+    
+    <?php echo Html::style('./resources/vendor/bootstrap/css/bootstrap.min.css'); ?>
+
+
+    
+    <style type="text/css">
+      .row{line-height: 40px;}
+
+
+#breadcrumb {
+  list-style: none;
+  display: inline-block;
+}
+#breadcrumb .icon {
+  font-size: 14px;
+}
+#breadcrumb li {
+  float: left;
+}
+#breadcrumb li a {
+  color: #FFF;
+  display: block;
+  background: #3498db;
+  text-decoration: none;
+  position: relative;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px 0 5px;
+  text-align: center;
+  margin-right: 23px;
+}
+#breadcrumb li:nth-child(even) a {
+  background-color: #2980b9;
+}
+#breadcrumb li:nth-child(even) a:before {
+  border-color: #2980b9;
+  border-left-color: transparent;
+}
+#breadcrumb li:nth-child(even) a:after {
+  border-left-color: #2980b9;
+}
+#breadcrumb li:first-child a {
+  padding-left: 15px;
+  -moz-border-radius: 4px 0 0 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px 0 0 4px;
+}
+#breadcrumb li:first-child a:before {
+  border: none;
+}
+#breadcrumb li:last-child a {
+  padding-right: 15px;
+  -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-radius: 0;
+  border-radius: 0 4px 4px 0;
+}
+#breadcrumb li:last-child a:after {
+  border: none;
+}
+#breadcrumb li a:before, #breadcrumb li a:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  border: 0 solid #3498db;
+  border-width: 20px 10px;
+  width: 0;
+  height: 0;
+}
+#breadcrumb li a:before {
+  left: -20px;
+  border-left-color: transparent;
+}
+#breadcrumb li a:after {
+  left: 100%;
+  border-color: transparent;
+  border-left-color: #3498db;
+}
+#breadcrumb li active a:hover {
+  background-color: #1abc9c;
+}
+#breadcrumb li active a:hover:before {
+  border-color: #1abc9c;
+  border-left-color: transparent;
+}
+#breadcrumb li active a:hover:after {
+  border-left-color: #1abc9c;
+}
+#breadcrumb li  a:active {
+  background-color: #16a085;
+}
+#breadcrumb li a:active:before {
+  border-color: #16a085;
+  border-left-color: transparent;
+}
+#breadcrumb li a:active:after {
+  border-left-color: #16a085;
+}
+
+#breadcrumb li a.active
+{
+  background-color: #1abc9c;
+}
+#breadcrumb li  a.active:hover:before {
+  border-color: #1abc9c;
+  border-left-color: transparent;
+}
+#breadcrumb li  a.active:hover:after {
+  border-left-color: #1abc9c;
+}
+
+    </style>
+  </head>
+
+  <body>
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
+                
+                <a href="mealFinder/" style="margin-top: 10px;" class="btn btn-primary">Logout</a>&nbsp;&nbsp;
+                
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                
+                <ul class="nav navbar-nav">
+                    <li><a href="admin">Home</a></li>
+                    <li><a href="sell_food">Sell</a></li>
+                    <li><a href="select_seller">Order</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+
+    <!-- Page Content -->
+    <div class="container">
+     
+      <div class="col-md-12 col-sm-12 col-xs-12 ">
+        
+            <div class="row">
+              <ul id="breadcrumb">
+  
+  <li ><a class="active" href="#" > Details</a></li>
+  
+  <li><a href="#" > Check out message</a></li>
+</ul>
+            </div>
+          
+        <div id="step_2" style="display: none;">Message send</div>
+        <div id="step_1" class="row">
+
+          <div class="col-md-4">
+            <form id="confirm_order" onsubmit="confirm_buyer_order(event)">
+              <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+            <div class="panel panel-default">
+              <div class="panel-heading">Order Details</div>
+              <div class="panel-body">
+                <div class="row">
+                <div class="col-md-6">Required Portion</div>
+                <div class="col-md-4"><input id="quantity" name="quantity" type="number" min="0" max="<?php echo e($food->portion_left); ?>" onkeyup="show_amount('<?php echo e($food->cost_per_portion); ?>')" onkeypress="show_amount('<?php echo e($food->cost_per_portion); ?>')" onkeydown="show_amount('<?php echo e($food->cost_per_portion); ?>')" class="form-control" name="portion_required" required></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">Amount</div>
+                  <div class="col-md-6" id="div_id_amount"></div>
+                </div>
+                <input type="hidden" name="food_id" value="<?php echo e($food->id); ?>">
+                <input type="hidden" name="price" id="price">
+
+                <div class="row">
+                <div class="col-md-12"><input type="submit" name="confirm_order" value="Confirm Order" class="btn btn-primary"></div>
+                </div>
+              </div>
+            </div>
+            </form>
+          </div>
+
+          <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">Food Details</div>
+              <div class="panel-body">
+                  <div class="col-md-12">Name: <?php echo e($food->name); ?></div>
+                  <div class="col-md-12">Chef Name: <?php echo e($food->chef_name); ?></div>
+                  <div class="col-md-12">Ingrediants: <?php echo e($food->ingrediants); ?></div>
+                  <div class="col-md-12">Serves: <?php echo e($food->serves); ?></div>
+                  <div class="col-md-12">Time Prepared: <?php echo e($food->time_prepared); ?></div>
+                  <div class="col-md-12">Good Till: <?php echo e($food->good_till); ?></div>
+                  <div class="col-md-12">Cost Per Portion: <?php echo e($food->cost_per_portion); ?></div>
+                  <div class="col-md-12">Portion Left: <?php echo e($food->portion_left); ?></div>
+
+              </div>
+            </div>
+
+            
+              
+          </div>
+
+          <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">Seller Details:</div>
+              <div class="panel-body">
+                <div class="col-md-12">Name: <?php echo e($user->name); ?></div>
+                <div class="col-md-12">Nic: <?php echo e($user->nic); ?></div>
+                <div class="col-md-12">Email: <?php echo e($user->email); ?></div>
+                <div class="col-md-12">Phone: <?php echo e($user->phone); ?></div>
+                <div class="col-md-12">Description: <?php echo e($user->description); ?></div>
+              </div>
+            </div>  
+
+            
+            
+          </div>
+
+        </div>
+
+        
+
+      </div>
+      
+      
+    </div>
+    <!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript -->
+
+    <?php echo Html::script('./resources/vendor/jquery/jquery.min.js'); ?>
+
+   
+    <?php echo Html::script('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js'); ?> 
+
+
+    <?php echo Html::script('./resources/vendor/bootstrap/js/bootstrap.bundle.min.js'); ?> 
+   
+    <?php echo Html::script('./resources/vendor/bootstrap/js/bootstrap.min.js'); ?> 
+
+  
+    <script type="text/javascript" language="javascript">
+
+  //FUNCTION FOR TAB EDUCATIONAL QUALIFICATION
+  //28-05-16
+
+  
+
+  function show_amount(price)
+  {
+    $('#div_id_amount').html($('#quantity').val()*price)
+    $('#price').val($('#quantity').val()*price)
+  }
+
+  function confirm_buyer_order(event)
+  {
+    event.preventDefault();
+    $.ajax({
+        url:'confirm_order',
+        type:'GET',
+        cache:true,
+        data: $('#confirm_order').serialize()
+      }).done(function(data){
+        
+          $('#step_2').show();
+          $('#step_1').hide();
+      });
+  }
+  
+</script>
+  </body>
+
+</html>

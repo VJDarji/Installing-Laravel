@@ -1,0 +1,36 @@
+<div class="modal-dialog modal-md">
+	<div class="modal-content">
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	<h4 class="modal-title">Enter Login Info:</h4>
+</div>
+<form id="addUser" method="post" onsubmit="check_login(event)">
+
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-12">
+			
+			<div class="row">
+				<div class="col-md-3 col-sm-3 col-xs-4">Email</div>
+				<div class="col-md-5 col-sm-5 col-xs-7"><input type="email" name="email" id="email" class="form-control" required></div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-3 col-sm-3 col-xs-4">Password</div>
+				<div class="col-md-5 col-sm-5 col-xs-7"><input type="text" name="password" id="password" class="form-control" required></div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<div class="modal-footer">
+	<button type="button" class="btn default" data-dismiss="modal">Close</button>
+	<input type="submit" class="btn blue" value="Login" >
+</div>
+
+</form>
+
+</div>
+</div>

@@ -1,0 +1,150 @@
+<?php $__env->startSection('page_header'); ?>
+
+					<ul class="page-breadcrumb breadcrumb">
+						<li class="btn-group">
+							
+								
+						</li>
+						<li>
+							<i class="fa fa-home fa-4x"></i><a href="index">Home</a><i class="fa fa-angle-right"></i>
+						</li>
+						<li>
+							<a href="duty">Duty</a>
+						</li>
+						
+					</ul>
+					
+<div class="modal fade" style="overflow-y:scroll;" id="dynamic_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static"></div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('main_content'); ?>
+			
+	<div class="portlet box green col-md-9">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-cogs"></i>All Duty / Responsibility
+			</div>
+			<div class="tools">
+				<a href="javascript:;" class="collapse"></a>
+			</div>
+		</div>
+
+		<div class="portlet-body">
+			<div><a class="btn green" href="#" data-target="#ajax" onclick="add_new_duty()" ><i class="fa fa-plus fa-4x"></i>Add New Duty</a></div><br>
+
+			<div id="div_duty"  >
+				<?php echo $__env->make('duty.show_duty',['duty'=>$duty], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>	
+			</div>	
+			<br><br><br>
+		</div>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo Html::script('./resources/assets/jquery.min.js'); ?>
+
+<?php echo Html::style('./resources/assets/loader.css'); ?>
+
+
+<script type="text/javascript">
+	var preloader = '<div id="loader-wrapper" ><div id="loader"></div></div>';
+	var page =1;
+	   
+	   $(document).on('click','.pagination a', function(e){
+			e.preventDefault();
+			page = $(this).attr('href').split('page=')[1];
+			getDuty(page)
+		});
+	
+
+	
+		
+
+	function add_new_duty(){
+		$.ajax({
+			url:'duty/add',
+			type:'GET',
+			data:{ }
+		}).done(function(data){
+			
+			$('#dynamic_modal').html(data);
+			$('#dynamic_modal').modal('show');
+			
+		});
+	}
+
+	function store_duty(){
+		$.ajax({
+			url:'duty/store',
+			type:'GET',
+			cache:true,
+			data: $('#addDuty').serialize()
+		}).done(function(data){
+			
+			getDuty(page)
+		});
+	}
+
+	function getDuty(page){
+		
+		$("#department_div").append(preloader);
+		$.ajax({
+
+			url : 'duty/get?page='+page
+
+		}).done(function(data){
+			$('#div_duty').html(data);
+			//location.hash = page;
+		});
+	}
+
+	function edit_duty(id){
+		$.ajax({
+			url:'duty/edit',
+			type:'GET',
+			data:{ id: id }
+		}).done(function(data){
+			
+			$('#dynamic_modal').html(data);
+			$('#dynamic_modal').modal('show');
+			
+		});
+	}
+
+	function update_duty(){
+		$.ajax({
+			url:'duty/update',
+			type:'GET',
+			cache:true,
+			data: $('#editDuty').serialize()
+		}).done(function(data){
+			
+			getDuty(page)
+		});
+	}
+
+	function delete_duty(id){
+		
+		bootbox.confirm("Are you sure to delete the selected Record?", function(result)
+		{
+			if(result) 
+			{
+				$.ajax({
+					url:'duty/delete',
+					type:'GET',
+					cache:true,
+					data: {id:id}
+				}).done(function(data){
+					
+					getDuty(page)
+				});
+			}
+		});
+		
+	}
+
+		
+</script>
+
+
+
+<?php echo $__env->make('../master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

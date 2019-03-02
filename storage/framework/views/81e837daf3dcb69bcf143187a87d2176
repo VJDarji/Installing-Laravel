@@ -1,0 +1,4 @@
+<body>
+    your new password is <?php echo e($password); ?>
+
+</body>

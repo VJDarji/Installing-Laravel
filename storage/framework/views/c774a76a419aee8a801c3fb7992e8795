@@ -1,0 +1,173 @@
+<?php $__env->startSection('page_header'); ?>
+
+					<ul class="page-breadcrumb breadcrumb">
+						<li class="btn-group">
+							
+							<a class="btn green" href="#" data-target="#ajax" onclick="add_new_department()" ><i class="fa fa-plus fa-4x"></i>Add New Department / Section</a>	
+						</li>
+						<li>
+							<i class="fa fa-home fa-4x"></i><a href="index">Home</a><i class="fa fa-angle-right"></i>
+						</li>
+						<li>
+							<a href="department">Department / Section</a>
+						</li>
+						
+					</ul>
+					
+<div class="modal fade" style="overflow-y:scroll;" id="dynamic_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static"></div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('main_content'); ?>
+			
+	<div class="portlet box green col-md-9">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-cogs"></i>Department / Section
+			</div>
+			<div class="tools">
+				<a href="javascript:;" class="collapse"></a>
+			</div>
+		</div>
+
+		<div class="portlet-body ">
+			<div >
+				<div class="row">
+					<div class="col-md-3" style="margin-top: 5px;"><label>Department / Section</label></div>
+					<div class="col-md-4"><input type="text" class="form-control" id="search_term"></div>
+
+					<div class="col-md-3">
+						<input type="button" class="btn btn-success" onclick="searchDepartment('1')" value="Search Department / Section">
+					</div>
+				</div>
+			</div><br>
+
+			<div id="department_div"  >
+				<?php echo $__env->make('department.showDepartments',['departments'=>$departments], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>	
+			</div>	
+			<br><br><br>
+		</div>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo Html::script('./resources/assets/jquery.min.js'); ?>
+
+<?php echo Html::style('./resources/assets/loader.css'); ?>
+
+
+<script type="text/javascript">
+	var preloader = '<div id="loader-wrapper" ><div id="loader"></div></div>';
+	var page =1;
+	   
+	   $(document).on('click','.pagination a', function(e){
+			e.preventDefault();
+			page = $(this).attr('href').split('page=')[1];
+			getDepartments(page)
+		});
+	
+
+	
+	
+	function getDepartments(page){
+		var search_term = $('#search_term').val();
+		$("#department_div").append(preloader);
+		$.ajax({
+
+			url : 'showDepartments?page='+page+'&search_term='+search_term
+
+		}).done(function(data){
+			$('#department_div').html(data);
+			//location.hash = page;
+		});
+	}
+
+	function searchDepartment(page_start){
+		page = page_start;
+		var search_term = $('#search_term').val();
+		$("#department_div").append(preloader);
+		$.ajax({
+
+			url : 'showDepartments?page='+page+'&search_term='+search_term
+			
+		}).done(function(data){
+			//alert(data)
+			$('#department_div').html(data);
+			//location.hash = page;
+		});
+	}
+
+	function add_new_department(){
+		$.ajax({
+			url:'add_new_department',
+			type:'GET',
+			data:{ id: 1 }
+		}).done(function(data){
+			
+			$('#dynamic_modal').html(data);
+			$('#dynamic_modal').modal('show');
+			
+		});
+	}
+
+	function store_department(){
+		$.ajax({
+			url:'store_department',
+			type:'GET',
+			cache:true,
+			data: $('#addDepartment').serialize()
+		}).done(function(data){
+			
+			getDepartments(page)
+		});
+	}
+
+	function edit_department(id){
+		$.ajax({
+			url:'edit_department',
+			type:'GET',
+			data:{ id: id }
+		}).done(function(data){
+			
+			$('#dynamic_modal').html(data);
+			$('#dynamic_modal').modal('show');
+			
+		});
+	}
+
+	function update_department(){
+		$.ajax({
+			url:'update_department',
+			type:'GET',
+			cache:true,
+			data: $('#editDepartment').serialize()
+		}).done(function(data){
+			
+			getDepartments(page)
+		});
+	}
+
+	function delete_department(id){
+		
+		bootbox.confirm("Are you sure to delete the selected Record?", function(result)
+		{
+			if(result) 
+			{
+				$.ajax({
+					url:'delete_department',
+					type:'GET',
+					cache:true,
+					data: {id:id}
+				}).done(function(data){
+					
+					getDepartments(page)
+				});
+			}
+		});
+		
+	}
+
+		
+</script>
+
+
+
+<?php echo $__env->make('../master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
